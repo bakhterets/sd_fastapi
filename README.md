@@ -1,2 +1,1 @@
-# fastapi_pet
-fastapi edu project
+# Status Dashboard (Fast API)
