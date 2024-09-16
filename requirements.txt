@@ -1,4 +1,6 @@
-fastapi
-uvicorn
-sqlalchemy
 aiosqlite
+fastapi
+pydantic
+pydantic-settings
+sqlalchemy
+uvicorn
