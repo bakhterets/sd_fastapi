@@ -34,10 +34,10 @@ class DatabaseManager:
         )
         return session
 
-    async def session(self) -> AsyncGenerator[AsyncSession, None]:
+    async def session_dependency(self) -> AsyncGenerator[AsyncSession, None]:
         async with self.session_factory() as session:
             yield session
-            await session.commit()
+            await session.close()
 
     async def scoped_session(self) -> AsyncGenerator[AsyncSession, None]:
         session = self.get_scoped_session()
