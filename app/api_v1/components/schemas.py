@@ -2,16 +2,29 @@ from pydantic import BaseModel
 from pydantic import ConfigDict
 
 
-class ComponentBase(BaseModel):
+class ComponentAttributeBase(BaseModel):
     name: str
-    attributes: list[dict]
-    incidents: list[dict]
+    value: str
+    model_config = ConfigDict(from_attributes=True)
 
 
-class ComponentCreate(BaseModel):
+class ComponentAttributeCreate(ComponentAttributeBase):
     pass
 
 
-class Component(ComponentBase):
-    model_config = ConfigDict(from_attributes=True)
+class ComponentAttributeRead(ComponentAttributeBase):
     id: int
+
+
+class ComponentBase(BaseModel):
+    name: str
+    model_config = ConfigDict(from_attributes=True)
+
+
+class ComponentCreate(ComponentBase):
+    attributes: list[ComponentAttributeCreate]
+
+
+class ComponentRead(ComponentBase):
+    id: int
+    attributes: list[ComponentAttributeCreate]

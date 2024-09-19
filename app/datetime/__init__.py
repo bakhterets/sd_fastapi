@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from typing import Optional
-from zoneinfo import ZoneInfo
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 
 def datetime_utcnow() -> datetime:
@@ -77,11 +77,10 @@ def naive_from_dttz(
 
     try:
         tz = ZoneInfo(timezone_str)
-    except Exception as e:
-        raise ValueError(f"Invalid timezone: {timezone_str}") from e
+        # Set the timezone of the given timeobject
+        date_new_tz = timeobject.replace(tzinfo=tz)
+        # Convert to naive datetime after adjusting for the timezone
+    except ZoneInfoNotFoundError as e:
+        print(e)
 
-    # Set the timezone of the given timeobject
-    date_new_tz = timeobject.replace(tzinfo=tz)
-
-    # Convert to naive datetime after adjusting for the timezone
     return naive_from_timestamp(date_new_tz.timestamp())

@@ -8,13 +8,13 @@ from fastapi import status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from . import crud
-from .schemas import Component
 from .schemas import ComponentCreate
+from .schemas import ComponentRead
 
 router = APIRouter(tags=["Components"])
 
 
-@router.get("/", response_model=list[Component])
+@router.get("/", response_model=list[ComponentRead])
 async def get_components(
     session: AsyncSession = Depends(db_manager.session_dependency),
 ):
@@ -22,7 +22,7 @@ async def get_components(
 
 
 @router.get("/{component_id}")
-async def get_comppnent(
+async def get_component(
     component_id: int,
     session: AsyncSession = Depends(db_manager.session_dependency),
 ):
@@ -38,7 +38,7 @@ async def get_comppnent(
     )
 
 
-@router.post("/", response_model=Component)
+@router.post("/", response_model=ComponentRead)
 async def create_component(
     component_in: ComponentCreate,
     session: AsyncSession = Depends(db_manager.session_dependency),

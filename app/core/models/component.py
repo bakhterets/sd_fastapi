@@ -24,7 +24,7 @@ class Component(Base):
     id = mapped_column(Integer, primary_key=True, index=True)
     name: Mapped[str] = mapped_column(String())
     attributes: Mapped[List["ComponentAttribute"]] = relationship(
-        back_populates="component"
+        back_populates="component", lazy="selectin"
     )
     incidents: Mapped[List["Incident"]] = relationship(
         secondary=IncidentComponentRelation, back_populates="components"
