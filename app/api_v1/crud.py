@@ -23,7 +23,7 @@ async def get_components(session: AsyncSession) -> list[Component]:
         select(Component)
         .options(
             selectinload(Component.attributes),
-            selectinload(Component.incidents),
+            selectinload(Component.incidents).selectinload(Incident.updates),
         )
         .order_by(Component.id)
     )
@@ -35,9 +35,16 @@ async def get_components(session: AsyncSession) -> list[Component]:
 async def get_component(
     session: AsyncSession, component_id: int
 ) -> Component | None:
-    return await session.get(
-        Component, component_id, options=[selectinload(Component.attributes)]
+    query = (
+        select(Component)
+        .where(Component.id == component_id)
+        .options(
+            selectinload(Component.attributes),
+            selectinload(Component.incidents),
+        )
     )
+    result = await session.execute(query)
+    return result.scalar_one_or_none()
 
 
 async def create_component(
@@ -90,9 +97,16 @@ async def get_incidents(session: AsyncSession) -> list[Incident]:
 async def get_incident(
     session: AsyncSession, incident_id: int
 ) -> Incident | None:
-    return await session.get(
-        Incident, incident_id, options=[selectinload(Incident.updates)]
+    query = (
+        select(Incident)
+        .where(Incident.id == incident_id)
+        .options(
+            selectinload(Incident.updates),
+            selectinload(Incident.components),
+        )
     )
+    result = await session.execute(query)
+    return result.scalar_one_or_none()
 
 
 async def create_incident(
@@ -131,4 +145,5 @@ async def create_incident(
     session.add(incident)
     await session.commit()
     await session.refresh(incident)
+
     return incident

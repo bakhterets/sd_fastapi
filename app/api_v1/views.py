@@ -10,21 +10,20 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from . import crud
 from .schemas import ComponentCreate
 from .schemas import ComponentRead
-from .schemas import IncidentRead
 from .schemas import IncidentCreate
-
+from .schemas import IncidentRead
 
 router = APIRouter()
 
 
-@router.get("/component_status", response_model=list[ComponentRead])
+@router.get("/components", response_model=list[ComponentRead])
 async def get_components(
     session: AsyncSession = Depends(db_manager.session_dependency),
 ):
     return await crud.get_components(session=session)
 
 
-@router.get("/component_status/{component_id}")
+@router.get("/components/{component_id}", response_model=ComponentRead)
 async def get_component(
     component_id: int,
     session: AsyncSession = Depends(db_manager.session_dependency),
@@ -41,7 +40,7 @@ async def get_component(
     )
 
 
-@router.post("/component_status", response_model=ComponentRead)
+@router.post("/components", response_model=ComponentCreate)
 async def create_component(
     component_in: ComponentCreate,
     session: AsyncSession = Depends(db_manager.session_dependency),
@@ -76,7 +75,7 @@ async def get_incident(
     )
 
 
-@router.post("/incidents", response_model=IncidentRead)
+@router.post("/incidents")
 async def create_incident(
     incident_in: IncidentCreate,
     session: AsyncSession = Depends(db_manager.session_dependency),

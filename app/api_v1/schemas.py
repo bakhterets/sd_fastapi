@@ -16,7 +16,7 @@ class ComponentAttributeBase(BaseModel):
 
 class ComponentBase(BaseModel):
     name: str
-    attributes: List[ComponentAttributeBase] = []
+    # attributes: List[ComponentAttributeBase] = []
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -37,7 +37,7 @@ class IncidentBase(BaseModel):
 
 
 class ComponentCreate(ComponentBase):
-    pass
+    attributes: List[ComponentAttributeBase]
 
 
 class IncidentComp(IncidentBase):
@@ -46,17 +46,18 @@ class IncidentComp(IncidentBase):
 
 class ComponentRead(ComponentBase):
     id: int
+    attributes: List[ComponentAttributeBase] = []
     incidents: List[IncidentComp] = []
 
 
+class ComponentInc(ComponentBase):
+    attributes: List[ComponentAttributeBase]
+
+
 class IncidentCreate(IncidentBase):
-    components: List[ComponentBase]
-
-
-class IncidentUpdate(IncidentCreate):
-    pass
+    components: List[ComponentInc]
 
 
 class IncidentRead(IncidentBase):
     id: int
-    components: List[ComponentBase]
+    components: List[ComponentInc] = []
