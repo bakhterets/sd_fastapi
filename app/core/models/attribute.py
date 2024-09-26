@@ -14,21 +14,12 @@ class ComponentAttribute(Base):
 
     __tablename__ = "component_attribute"
 
-    #: Unique identifier for the component attribute
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-
-    #: Foreign key to the component
     component_id: Mapped[int] = mapped_column(
         ForeignKey("component.id"), index=True
     )
-
-    #: Name of the attribute
     name: Mapped[str] = mapped_column(String(30))
-
-    #: Value of the attribute
     value: Mapped[str] = mapped_column(String(50))
-
-    #: Relationship to the component
     component: Mapped[Component] = relationship(back_populates="attributes")
 
     def __repr__(self):

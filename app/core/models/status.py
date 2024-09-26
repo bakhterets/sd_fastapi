@@ -22,6 +22,7 @@ class IncidentStatus(Base):
     """Incident Updates"""
 
     __tablename__ = "incident_status"
+
     id = mapped_column(Integer, primary_key=True, index=True)
     incident_id = mapped_column(ForeignKey("incident.id"), index=True)
     incident: Mapped["Incident"] = relationship(back_populates="updates")

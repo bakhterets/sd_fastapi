@@ -33,13 +33,10 @@ class Incident(Base):
     )
     end_date: Mapped[datetime] = mapped_column(nullable=True)
     impact: Mapped[int] = mapped_column(SmallInteger)
-    # upgrade: system: Mapped[bool] = mapped_column(Boolean, default=False)
     system: Mapped[bool] = mapped_column(Boolean, default=False)
-
     components: Mapped[List["Component"]] = relationship(
         back_populates="incidents", secondary=IncidentComponentRelation
     )
-
     updates: Mapped[List["IncidentStatus"]] = relationship(
         back_populates="incident",
         order_by="desc(IncidentStatus.timestamp)",

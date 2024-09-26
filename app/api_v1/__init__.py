@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from .components.views import router as components_router
+from .views import router as api_router
 
 router = APIRouter()
-router.include_router(router=components_router, prefix="/components")
+router.include_router(router=api_router)
