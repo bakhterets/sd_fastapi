@@ -6,6 +6,7 @@ from fastapi import HTTPException
 from fastapi import status
 
 from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi_cache.decorator import cache
 
 from . import crud
 from .schemas import ComponentCreate
@@ -16,7 +17,12 @@ from .schemas import IncidentRead
 router = APIRouter()
 
 
+def cache_key_builder(func, *args, **kwargs):
+    return "components_cache_key"
+
+
 @router.get("/components", response_model=list[ComponentRead])
+@cache(expire=60, key_builder=cache_key_builder)
 async def get_components(
     session: AsyncSession = Depends(db_manager.session_dependency),
 ):

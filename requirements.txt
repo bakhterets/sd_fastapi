@@ -1,5 +1,6 @@
 aiosqlite
 fastapi
+fastapi_cache2
 pydantic
 pydantic-settings
 sqlalchemy
